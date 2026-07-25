@@ -113,10 +113,13 @@ export default function Footer() {
 
         {/* Bottom Divider */}
         <div className="border-t border-slate-800/60 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex flex-col sm:flex-row items-center gap-2 text-[11px] text-slate-500 font-manrope">
+          <div className="flex flex-col sm:flex-row items-center gap-2 text-[11px] text-slate-500 font-manrope text-center sm:text-left">
             <span>&copy; {year} NorthPeak Digital.</span>
             <span className="hidden sm:inline">·</span>
             <span>Engineering Growth Through Digital Excellence.</span>
+          </div>
+          <div className="text-[11px] text-slate-500 font-manrope flex items-center gap-1.5">
+            Built for digital heroes training task <span className="text-red-500">❤️</span>
           </div>
         </div>
 
