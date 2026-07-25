@@ -1,173 +1,160 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Moon, Sun, Monitor, Menu, X } from 'lucide-react'
+import { useTheme } from './ThemeContext'
 
 const NAV_LINKS = [
-  { href: '#home', label: 'Home' },
   { href: '#services', label: 'Services' },
-  { href: '#testimonials', label: 'Testimonials' },
+  { href: '#work', label: 'Work' },
   { href: '#pricing', label: 'Pricing' },
+  { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const menuRef = useRef(null)
-  const hamburgerRef = useRef(null)
-  const firstLinkRef = useRef(null)
+  const { theme, setTheme } = useTheme()
+  const [hidden, setHidden] = useState(false)
+  const lastScrollY = useRef(0)
 
-  // Detect scroll for glassmorphism
+  // Hide navbar on scroll down, show on scroll up
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      if (currentScrollY > lastScrollY.current && currentScrollY > 120) {
+        setHidden(true)
+      } else {
+        setHidden(false)
+      }
+      lastScrollY.current = currentScrollY
+    }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Lock/unlock body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  // Focus trap inside mobile menu
-  useEffect(() => {
-    if (!menuOpen) return
-    const focusable = menuRef.current?.querySelectorAll(
-      'a[href], button, [tabindex]:not([tabindex="-1"])'
-    )
-    if (!focusable?.length) return
-    firstLinkRef.current?.focus()
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setMenuOpen(false)
-        hamburgerRef.current?.focus()
-        return
-      }
-      if (e.key !== 'Tab') return
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-      if (e.shiftKey ? document.activeElement === first : document.activeElement === last) {
-        e.preventDefault()
-        ;(e.shiftKey ? last : first).focus()
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [menuOpen])
-
-  const closeMenu = useCallback(() => setMenuOpen(false), [])
-  const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), [])
+  // Cycle theme: light -> dark -> system -> light
+  const toggleThemeCycle = () => {
+    if (theme === 'light') setTheme('dark')
+    else if (theme === 'dark') setTheme('system')
+    else setTheme('light')
+  }
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'glass shadow-lg py-3'
-            : 'bg-transparent py-5'
-        }`}
-        role="banner"
+      <motion.header
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: -100, opacity: 0 }
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="flex items-center justify-between w-full max-w-[900px] px-6 py-2.5 rounded-full border border-border/40 bg-background/70 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-colors duration-300">
+          
           {/* Logo */}
-          <a
-            href="#home"
-            className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
-            aria-label="NorthPeak Digital — Home"
-          >
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect width="32" height="32" rx="8" fill="url(#logo-grad)"/>
-              <path d="M8 22L16 10L24 22H8Z" fill="white" opacity="0.9"/>
-              <path d="M13 22L16 17L19 22H13Z" fill="#06B6D4"/>
-              <defs>
-                <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32">
-                  <stop offset="0%" stopColor="#2563EB"/>
-                  <stop offset="100%" stopColor="#7C3AED"/>
-                </linearGradient>
-              </defs>
-            </svg>
-            <span
-              className={`font-sora font-bold text-lg transition-colors duration-300 ${
-                scrolled ? 'text-white' : 'text-brand-text'
-              }`}
-            >
+          <a href="#home" className="flex items-center gap-2 focus-visible:outline-none">
+            <span className="w-5 h-5 rounded-full bg-primary flex-shrink-0" />
+            <span className="font-manrope font-bold text-sm tracking-tight text-text-primary">
               NorthPeak
-              <span className="gradient-text"> Digital</span>
             </span>
           </a>
 
-          {/* Desktop Nav */}
-          <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-6">
             {NAV_LINKS.map(({ href, label }) => (
               <a
                 key={href}
                 href={href}
-                className={`nav-link transition-colors duration-200 ${
-                  scrolled ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-primary'
-                }`}
+                className="text-xs font-manrope font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
               >
                 {label}
               </a>
             ))}
           </nav>
 
-          {/* CTA + Hamburger */}
+          {/* Right Controls */}
           <div className="flex items-center gap-4">
-            <a
-              href="#contact"
-              className="btn-primary hidden sm:inline-flex text-sm py-2.5 px-5"
+            
+            {/* Minimal Understated Theme Toggle (Cycle) */}
+            <button
+              onClick={toggleThemeCycle}
+              className="p-1.5 rounded-full text-text-secondary hover:text-text-primary hover:bg-secondary transition-all"
+              aria-label={`Current theme is ${theme}. Click to change.`}
+              title={`Theme: ${theme.toUpperCase()} (Click to cycle)`}
+            >
+              {theme === 'light' ? (
+                <Sun size={15} className="stroke-[2]" />
+              ) : theme === 'dark' ? (
+                <Moon size={15} className="stroke-[2]" />
+              ) : (
+                <Monitor size={15} className="stroke-[2]" />
+              )}
+            </button>
+
+            {/* Micro CTA Button */}
+            <a 
+              href="#contact" 
+              className="inline-flex items-center justify-center px-4 py-2 text-xs font-manrope font-semibold bg-text-primary text-background hover:bg-primary hover:text-white transition-all rounded-full shadow-sm"
             >
               Book a Call
             </a>
+            
+            {/* Mobile Hamburger menu */}
             <button
-              ref={hamburgerRef}
-              className={`hamburger md:hidden ${menuOpen ? 'open' : ''}`}
-              onClick={toggleMenu}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              className="md:hidden p-1 text-text-primary focus:outline-none"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
             >
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
-      </header>
+      </motion.header>
 
-      {/* Mobile Menu Overlay */}
-      <div
-        id="mobile-menu"
-        ref={menuRef}
-        className={`mobile-menu md:hidden ${menuOpen ? 'open' : ''}`}
-        aria-hidden={!menuOpen}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation menu"
-      >
-        <nav className="flex flex-col items-center gap-2 w-full px-8" aria-label="Mobile navigation">
-          {NAV_LINKS.map(({ href, label }, i) => (
-            <a
-              key={href}
-              ref={i === 0 ? firstLinkRef : null}
-              href={href}
-              className="text-white font-sora font-semibold text-2xl py-4 w-full text-center rounded-xl hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              onClick={closeMenu}
-              tabIndex={menuOpen ? 0 : -1}
-            >
-              {label}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            className="btn-primary mt-6 w-full justify-center text-lg"
-            onClick={closeMenu}
-            tabIndex={menuOpen ? 0 : -1}
+      {/* Mobile Fullscreen Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-lg flex flex-col items-center justify-center pt-16"
           >
-            Book a Call
-          </a>
-        </nav>
-      </div>
+            <nav className="flex flex-col items-center gap-6">
+              {NAV_LINKS.map(({ href, label }, i) => (
+                <motion.a
+                  key={href}
+                  href={href}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="text-text-primary font-manrope font-bold text-2xl hover:text-primary transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {label}
+                </motion.a>
+              ))}
+              <motion.a
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                href="#contact"
+                className="mt-4 px-6 py-2.5 text-sm font-semibold bg-primary text-white rounded-full"
+                onClick={() => setMenuOpen(false)}
+              >
+                Book a Call
+              </motion.a>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

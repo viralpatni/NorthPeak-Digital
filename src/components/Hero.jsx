@@ -1,229 +1,200 @@
-export default function Hero() {
-  return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center overflow-hidden bg-dark"
-      aria-label="Hero — NorthPeak Digital"
-    >
-      {/* Background layers */}
-      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        {/* Radial glow blobs */}
-        <div
-          className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-20"
-          style={{ background: 'radial-gradient(circle, #2563EB 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute -bottom-40 -right-40 w-[700px] h-[700px] rounded-full opacity-15"
-          style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, #06B6D4 0%, transparent 70%)' }}
-        />
-        {/* Grid pattern */}
-        <svg
-          className="absolute inset-0 w-full h-full opacity-[0.03]"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
+import { useRef } from 'react'
+import { motion } from 'framer-motion'
+import { ArrowRight, Check, Star } from 'lucide-react'
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-20 lg:pt-36 lg:pb-32">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Left — Copy */}
-          <div>
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 mb-6">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" aria-hidden="true" />
-              <span className="text-slate-300 text-xs font-manrope font-semibold tracking-widest uppercase">
-                Award-winning Digital Agency
+export default function Hero() {
+  const containerRef = useRef(null)
+
+  return (
+    <section 
+      ref={containerRef} 
+      id="home" 
+      className="relative min-h-screen pt-40 pb-20 overflow-hidden flex items-center bg-background"
+    >
+      <div className="max-w-container mx-auto px-4 sm:px-6 w-full relative z-10">
+        <div className="grid lg:grid-cols-12 gap-16 items-center">
+          
+          {/* Left Column: Typography Focus */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 flex flex-col items-start"
+          >
+            {/* Small Label */}
+            <div className="inline-flex items-center gap-1.5 mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="text-[11px] font-manrope font-extrabold tracking-widest text-text-secondary uppercase">
+                Digital Engineering Agency
               </span>
             </div>
 
-            <h1 className="text-white font-sora font-extrabold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-none mb-6">
-              Building Websites{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(135deg, #2563EB 0%, #7C3AED 50%, #06B6D4 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                That Grow
-              </span>{' '}
-              Businesses.
+            {/* Large Headline */}
+            <h1 className="font-manrope font-extrabold text-[44px] sm:text-[64px] lg:text-[72px] text-text-primary leading-[1.08] tracking-tight mb-6">
+              Building Digital Products That Help Businesses Grow.
             </h1>
-
-            <p className="text-slate-400 font-manrope text-lg lg:text-xl leading-relaxed max-w-xl mb-10">
-              We design lightning-fast, conversion-focused digital experiences that help startups
-              and businesses scale with confidence.
+            
+            {/* Supporting Paragraph */}
+            <p className="text-text-secondary font-manrope text-base sm:text-lg mb-10 max-w-[500px] leading-relaxed">
+              NorthPeak combines strategy, engineering, UI/UX and long-term support to build products that generate measurable business outcomes.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="#contact"
-                className="btn-primary text-base justify-center"
-                id="hero-cta-primary"
-              >
-                Start Your Project
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+            {/* Two CTA Buttons */}
+            <div className="flex flex-wrap gap-3 mb-12">
+              <a href="#contact" className="btn-primary text-xs font-semibold py-3 px-6 inline-flex items-center gap-2">
+                Book a Discovery Call
+                <ArrowRight size={14} />
               </a>
-              <a
-                href="#services"
-                className="btn-secondary text-base justify-center border-white/20 text-slate-300 hover:text-white hover:border-white/50"
-                id="hero-cta-secondary"
-              >
-                View Our Work
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M19 9l-7 7-7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+              <a href="#work" className="btn-secondary text-xs font-semibold py-3 px-6">
+                View Case Studies
               </a>
             </div>
 
-            {/* Social proof bar */}
-            <div className="flex items-center gap-6 mt-12 pt-8 border-t border-white/10">
-              <div className="flex -space-x-3">
-                {['#2563EB', '#7C3AED', '#06B6D4', '#0EA5E9'].map((color, i) => (
-                  <div
-                    key={i}
-                    className="w-10 h-10 rounded-full border-2 border-dark flex items-center justify-center text-white font-sora font-bold text-sm"
-                    style={{ background: color, zIndex: 4 - i }}
-                    aria-hidden="true"
-                  >
-                    {['J', 'S', 'M', 'A'][i]}
+            {/* Trust Metrics & Badges */}
+            <div className="flex flex-col gap-6 border-t border-border/60 pt-8 w-full">
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+                <div className="flex flex-col">
+                  <span className="font-manrope font-extrabold text-xl text-text-primary">250+</span>
+                  <span className="text-xs text-text-secondary">Projects Delivered</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-manrope font-extrabold text-xl text-text-primary">98%</span>
+                  <span className="text-xs text-text-secondary">Client Satisfaction</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-manrope font-extrabold text-xl text-text-primary">18</span>
+                  <span className="text-xs text-text-secondary">Countries Served</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-manrope font-extrabold text-xl text-text-primary">&lt;2 Hours</span>
+                  <span className="text-xs text-text-secondary">Average Response Time</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-text-secondary">
+                <div className="flex items-center gap-1.5">
+                  <div className="flex gap-0.5 text-[#F59E0B]">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star key={i} size={12} fill="currentColor" />
+                    ))}
+                  </div>
+                  <span>Rated Excellent</span>
+                </div>
+                <span className="w-1 h-1 rounded-full bg-border" />
+                <span>Top Rated Digital Engineering Agency</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Custom Abstract Product Dashboard */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 relative hidden lg:block"
+          >
+            {/* Main Window */}
+            <div className="w-full bg-card border border-border/50 rounded-2xl shadow-soft-lg overflow-hidden p-6 glass-panel relative">
+              {/* Fake UI Header controls */}
+              <div className="flex items-center justify-between mb-8 border-b border-border/40 pb-4">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-border" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-border" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-border" />
+                </div>
+                <div className="w-32 h-4 bg-secondary rounded-full border border-border/20" />
+                <div className="w-8 h-4 bg-secondary rounded-full border border-border/20" />
+              </div>
+
+              {/* Grid content */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {[
+                  { title: "Revenue", val: "+14.8%", desc: "Direct Growth" },
+                  { title: "Conversions", val: "3.42%", desc: "+0.8% this week" },
+                  { title: "SEO Score", val: "99", desc: "Global CDN average" },
+                  { title: "Traffic", val: "142K", desc: "Monthly active" },
+                  { title: "Users", val: "84.2K", desc: "Retained" },
+                  { title: "Pipeline", val: "$1.2M", desc: "Projected" }
+                ].map((kpi, idx) => (
+                  <div key={idx} className="bg-background/40 border border-border/40 p-3 rounded-xl">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1">{kpi.title}</span>
+                    <span className="font-manrope font-extrabold text-lg text-text-primary block">{kpi.val}</span>
+                    <span className="text-[10px] text-text-secondary block mt-1">{kpi.desc}</span>
                   </div>
                 ))}
               </div>
-              <div>
-                <div className="flex gap-0.5 mb-1" aria-label="5 star rating">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#FBBF24" aria-hidden="true">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-slate-400 text-sm font-manrope">
-                  <strong className="text-white">150+ clients</strong> love working with us
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* Right — Abstract floating UI visual */}
-          <div className="relative flex justify-center items-center lg:justify-end" aria-hidden="true">
-            <div className="relative w-full max-w-sm lg:max-w-md">
-              {/* Main card */}
-              <div
-                className="glass rounded-2xl p-6 shadow-2xl"
-                style={{ animation: 'floatSlow 6s ease-in-out infinite' }}
-              >
-                {/* Browser bar */}
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
-                  <div className="flex-1 ml-3 h-7 rounded-lg bg-white/10 flex items-center px-3">
-                    <span className="text-slate-400 text-xs font-mono">northpeak.digital</span>
-                  </div>
+              {/* Main SVG Chart Area */}
+              <div className="h-[180px] w-full bg-background/30 border border-border/40 rounded-xl p-4 flex flex-col justify-between">
+                <div className="flex justify-between items-center text-[10px] text-text-muted font-semibold">
+                  <span>WEBSITE PERFORMANCE</span>
+                  <span className="text-primary">LIVE UPDATING</span>
                 </div>
-                {/* Mock chart */}
-                <div className="mb-4 bg-white/5 rounded-xl p-4">
-                  <p className="text-slate-400 text-xs font-manrope mb-2">Conversion Rate</p>
-                  <p className="text-white font-sora font-bold text-2xl">+247%</p>
-                  <svg viewBox="0 0 200 60" className="w-full mt-2" aria-label="Conversion rate chart showing upward trend">
-                    <polyline
-                      points="0,55 30,45 60,38 90,28 120,20 150,12 180,5 200,3"
-                      fill="none"
-                      stroke="url(#chart-grad)"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
+                
+                <div className="w-full h-24 mt-4 relative">
+                  <svg viewBox="0 0 500 120" className="w-full h-full overflow-visible">
+                    {/* Horizontal grid lines */}
+                    <line x1="0" y1="30" x2="500" y2="30" stroke="var(--color-border)" strokeWidth="0.5" strokeDasharray="3 3" />
+                    <line x1="0" y1="60" x2="500" y2="60" stroke="var(--color-border)" strokeWidth="0.5" strokeDasharray="3 3" />
+                    <line x1="0" y1="90" x2="500" y2="90" stroke="var(--color-border)" strokeWidth="0.5" strokeDasharray="3 3" />
+                    
+                    {/* Area path */}
+                    <path 
+                      d="M0,120 L0,90 C50,85 100,100 150,75 C200,50 250,80 300,45 C350,10 400,30 500,15 L500,120 Z" 
+                      fill="var(--color-primary)" 
+                      opacity="0.04" 
                     />
-                    <defs>
-                      <linearGradient id="chart-grad" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stopColor="#2563EB"/>
-                        <stop offset="100%" stopColor="#06B6D4"/>
-                      </linearGradient>
-                    </defs>
+                    
+                    {/* Curved line */}
+                    <path 
+                      d="M0,90 C50,85 100,100 150,75 C200,50 250,80 300,45 C350,10 400,30 500,15" 
+                      fill="none" 
+                      stroke="var(--color-primary)" 
+                      strokeWidth="2.5" 
+                      strokeLinecap="round" 
+                    />
+
+                    {/* Target dot */}
+                    <circle cx="500" cy="15" r="4" fill="var(--color-primary)" />
+                    <circle cx="500" cy="15" r="8" fill="none" stroke="var(--color-primary)" strokeWidth="1.5" className="animate-ping origin-center" />
                   </svg>
                 </div>
-                {/* Metric pills */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white/5 rounded-xl p-3">
-                    <p className="text-slate-400 text-xs mb-1">Avg. Load Time</p>
-                    <p className="text-white font-sora font-bold">0.8s</p>
-                  </div>
-                  <div className="bg-white/5 rounded-xl p-3">
-                    <p className="text-slate-400 text-xs mb-1">Lighthouse Score</p>
-                    <p className="text-white font-sora font-bold">98/100</p>
-                  </div>
-                </div>
               </div>
-
-              {/* Floating badge 1 */}
-              <div
-                className="absolute -top-6 -right-4 glass rounded-xl px-4 py-3 shadow-xl"
-                style={{ animation: 'floatMedium 4s ease-in-out infinite' }}
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-white text-xs font-sora font-bold">Performance</p>
-                    <p className="text-accent text-xs">+320% faster</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating badge 2 */}
-              <div
-                className="absolute -bottom-4 -left-4 glass rounded-xl px-4 py-3 shadow-xl"
-                style={{ animation: 'floatMedium 5s ease-in-out infinite 1s' }}
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="#06B6D4" strokeWidth="2" strokeLinecap="round"/>
-                      <polyline points="22 4 12 14.01 9 11.01" stroke="#06B6D4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-white text-xs font-sora font-bold">98% Satisfaction</p>
-                    <p className="text-slate-400 text-xs">150+ Projects</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Abstract gradient orbs behind card */}
-              <div
-                className="absolute inset-0 -z-10 rounded-3xl opacity-40"
-                style={{
-                  background: 'radial-gradient(ellipse at 30% 50%, #2563EB40 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, #7C3AED40 0%, transparent 60%)',
-                  filter: 'blur(30px)',
-                }}
-              />
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" aria-hidden="true">
-        <span className="text-slate-500 text-xs font-manrope tracking-widest uppercase">Scroll</span>
-        <div className="w-5 h-9 border-2 border-slate-600 rounded-full flex justify-center pt-1.5">
-          <div className="w-1 h-2 bg-primary rounded-full" style={{ animation: 'floatSlow 1.5s ease-in-out infinite' }} />
+            {/* Subtle floating analytics widgets */}
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -left-8 top-1/3 bg-card border border-border/60 p-4 rounded-xl shadow-soft-md glass-panel flex items-center gap-3"
+            >
+              <div className="w-8.5 h-8.5 rounded-lg bg-success/10 flex items-center justify-center text-success">
+                <Check size={16} className="stroke-[3.5]" />
+              </div>
+              <div>
+                <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider leading-none mb-1">Deployment Status</div>
+                <div className="text-xs font-extrabold text-text-primary leading-none">Production Active</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -right-6 bottom-10 bg-card border border-border/60 p-4 rounded-xl shadow-soft-md glass-panel flex flex-col gap-1"
+            >
+              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Recent Activity</span>
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+                <span className="text-[11px] font-manrope font-semibold text-text-secondary">
+                  API Integration Complete
+                </span>
+              </div>
+            </motion.div>
+
+          </motion.div>
         </div>
       </div>
     </section>
   )
 }
+

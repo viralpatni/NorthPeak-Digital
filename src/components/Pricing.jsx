@@ -1,157 +1,166 @@
-const CHECK_ICON = (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="flex-shrink-0">
-    <circle cx="12" cy="12" r="10" fill="rgba(37,99,235,0.15)"/>
-    <path d="M9 12l2 2 4-4" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-)
-
-const CHECK_ICON_LIGHT = (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="flex-shrink-0">
-    <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.15)"/>
-    <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-)
+import { useState } from 'react'
+import { Check, ChevronDown } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const TIERS = [
   {
-    id: 'starter',
     name: 'Starter',
-    price: '$2,499',
-    period: 'one-time',
-    tagline: 'Perfect for early-stage businesses.',
-    featured: false,
-    cta: 'Get Started',
-    ctaHref: '#contact',
+    price: '$3,000',
+    ideal: 'Early-stage startups launching their first digital product.',
     features: [
-      '5-page custom website',
-      'Responsive design',
-      'SEO foundation setup',
+      'Custom React frontend',
+      'Fully responsive design',
+      'Core Web Vitals optimization',
+      'Technical SEO foundation',
       'Contact form integration',
-      '3 rounds of revisions',
-      '30-day post-launch support',
+      '30-day post-launch support'
     ],
+    support: 'Email support, 48h response',
+    scope: 'Single-page or landing page',
+    timeline: '3–4 weeks',
+    cta: 'Get Started',
+    popular: false
   },
   {
-    id: 'professional',
-    name: 'Professional',
-    price: '$5,999',
-    period: 'one-time',
-    tagline: 'Our most popular package for scaling teams.',
-    featured: true,
-    cta: 'Start Your Project',
-    ctaHref: '#contact',
+    name: 'Growth',
+    price: '$8,000',
+    ideal: 'Scaling businesses ready to invest in a serious digital platform.',
     features: [
-      'Up to 15 custom pages',
-      'Advanced UI/UX design',
-      'Full SEO optimization',
-      'Performance optimization',
-      'CMS integration',
-      'Analytics dashboard setup',
-      '90-day priority support',
-      'Quarterly performance review',
+      'Up to 10 custom pages',
+      'Headless CMS integration',
+      'Advanced UI microinteractions',
+      'Comprehensive SEO audit & setup',
+      'Performance monitoring dashboard',
+      'Analytics & conversion tracking',
+      'Blog or content architecture',
+      '60-day post-launch support'
     ],
+    support: 'Priority email & calls, 12h response',
+    scope: 'Multi-page platform with CMS',
+    timeline: '6–8 weeks',
+    cta: 'Book a Strategy Call',
+    popular: true
   },
   {
-    id: 'enterprise',
     name: 'Enterprise',
     price: 'Custom',
-    period: 'tailored',
-    tagline: 'Full-scale solutions for complex organisations.',
-    featured: false,
-    cta: 'Book a Strategy Call',
-    ctaHref: '#contact',
+    ideal: 'Established companies needing bespoke web applications at scale.',
     features: [
-      'Unlimited pages',
-      'Custom web application',
-      'E-commerce development',
-      'Dedicated project manager',
-      'API & third-party integrations',
-      'Ongoing maintenance retainer',
-      'SLA-backed support',
-      'Quarterly strategy sessions',
+      'Unlimited page architecture',
+      'Full-stack application backend',
+      'Custom design system & tokens',
+      'Dedicated engineering team',
+      'API integrations & automation',
+      'Role-based access & authentication',
+      '24/7 SLA server support',
+      'Ongoing maintenance retainer'
     ],
+    support: 'Dedicated account manager, 2h SLA',
+    scope: 'Full-stack web application',
+    timeline: '8–16 weeks',
+    cta: 'Contact Sales',
+    popular: false
+  }
+]
+
+const PRICING_FAQS = [
+  {
+    q: "Do you require payment upfront?",
+    a: "We typically structure payments in milestones: 40% at project start, 30% at design approval, and 30% at launch. Enterprise projects have custom payment schedules."
   },
+  {
+    q: "What if the project scope changes?",
+    a: "Scope changes are natural. We handle them transparently with documented change requests that outline the additional time and cost before any work begins."
+  },
+  {
+    q: "Is there a money-back guarantee?",
+    a: "We offer a risk-free initial consultation. If after our discovery session you decide not to proceed, there is no charge. Once development begins, milestone payments are non-refundable but fully protected by our delivery guarantee."
+  },
+  {
+    q: "Can I upgrade my plan mid-project?",
+    a: "Absolutely. Many clients start with Starter or Growth and expand scope as they see results. We'll adjust the proposal and timeline accordingly."
+  }
 ]
 
 export default function Pricing() {
+  const [openFaq, setOpenFaq] = useState(null)
+
   return (
-    <section
-      id="pricing"
-      className="py-24 lg:py-32 bg-light-bg"
-      aria-labelledby="pricing-heading"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16 reveal">
-          <span className="section-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-            Transparent Pricing
-          </span>
-          <h2
-            id="pricing-heading"
-            className="font-sora font-extrabold text-3xl sm:text-4xl lg:text-5xl text-brand-text mt-4 mb-4"
-          >
-            Simple, Honest{' '}
-            <span className="gradient-text">Pricing</span>
+    <section id="pricing" className="py-section-y bg-background border-t border-border/40">
+      <div className="max-w-container mx-auto px-4 sm:px-6">
+        
+        {/* Section Header */}
+        <div className="max-w-[700px] mb-20">
+          <div className="inline-flex items-center gap-1.5 mb-4">
+            <span className="text-[11px] font-manrope font-extrabold tracking-wider text-primary uppercase">
+              Investment
+            </span>
+          </div>
+          <h2 className="font-manrope font-extrabold text-[36px] sm:text-[44px] text-text-primary tracking-tight leading-tight">
+            Simple, transparent pricing.
           </h2>
-          <p className="text-slate-500 font-manrope text-lg max-w-xl mx-auto">
-            No hidden fees, no surprises. Choose the plan that fits your ambitions.
+          <p className="text-text-secondary font-manrope text-base sm:text-lg mt-4 max-w-[600px]">
+            No hidden costs. Every proposal is tailored to your project. Choose a starting point, and we'll scope the rest together.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          {TIERS.map((tier, i) => (
-            <article
-              key={tier.id}
-              id={`pricing-${tier.id}`}
-              className={`pricing-card reveal reveal-delay-${i + 1} ${tier.featured ? 'featured' : ''}`}
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mb-12">
+          {TIERS.map((tier) => (
+            <div
+              key={tier.name}
+              className={`flex flex-col p-8 sm:p-10 rounded-3xl bg-card border transition-all duration-300 ${
+                tier.popular 
+                  ? 'border-primary shadow-soft-md relative' 
+                  : 'border-border/60 shadow-soft-sm hover:border-border'
+              }`}
             >
-              {/* Most popular badge */}
-              {tier.featured && (
-                <div className="popular-badge" aria-label="Most popular plan">
-                  ⭐ Most Popular
+              {/* Most Popular Badge */}
+              {tier.popular && (
+                <div className="absolute -top-3 left-8">
+                  <span className="px-4 py-1.5 bg-primary text-white text-[10px] font-extrabold uppercase tracking-widest rounded-full shadow-sm">
+                    Most Popular
+                  </span>
                 </div>
               )}
 
-              {/* Plan name */}
-              <h3
-                className={`font-sora font-bold text-xl mb-1 ${tier.featured ? 'text-white' : 'text-brand-text'}`}
-              >
+              <h3 className="font-manrope font-extrabold text-xl text-text-primary mb-2 mt-2">
                 {tier.name}
               </h3>
-              <p className={`font-manrope text-sm mb-6 ${tier.featured ? 'text-slate-400' : 'text-slate-500'}`}>
-                {tier.tagline}
+              <p className="text-text-secondary font-manrope text-sm leading-relaxed mb-6">
+                {tier.ideal}
               </p>
 
               {/* Price */}
-              <div className="mb-8">
-                <span
-                  className={`font-sora font-extrabold text-4xl lg:text-5xl ${
-                    tier.featured ? 'text-white' : 'text-brand-text'
-                  }`}
-                >
-                  {tier.price}
-                </span>
-                {tier.price !== 'Custom' && (
-                  <span className={`font-manrope text-sm ml-2 ${tier.featured ? 'text-slate-400' : 'text-slate-500'}`}>
-                    {tier.period}
-                  </span>
-                )}
+              <div className="flex items-baseline text-text-primary font-manrope mb-8">
+                <span className="text-4xl sm:text-5xl font-extrabold tracking-tight">{tier.price}</span>
+                {tier.price !== 'Custom' && <span className="text-xs text-text-secondary font-semibold ml-2">/project</span>}
               </div>
 
-              {/* Divider */}
-              <div className={`h-px mb-6 ${tier.featured ? 'bg-white/10' : 'bg-slate-200'}`} />
+              {/* Project Details */}
+              <div className="space-y-3 mb-8 pb-6 border-b border-border/40">
+                <div className="flex justify-between text-sm">
+                  <span className="text-text-muted font-semibold">Scope</span>
+                  <span className="text-text-primary font-bold">{tier.scope}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-text-muted font-semibold">Timeline</span>
+                  <span className="text-text-primary font-bold">{tier.timeline}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-text-muted font-semibold">Support</span>
+                  <span className="text-text-primary font-bold text-right max-w-[180px]">{tier.support}</span>
+                </div>
+              </div>
 
-              {/* Features */}
-              <ul className="space-y-3 mb-8" aria-label={`${tier.name} features`}>
+              {/* Feature List */}
+              <ul className="space-y-3 mb-10 flex-1">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3 font-manrope text-sm">
-                    {tier.featured ? CHECK_ICON_LIGHT : CHECK_ICON}
-                    <span className={tier.featured ? 'text-slate-300' : 'text-slate-600'}>
+                  <li key={feature} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-primary/5 flex items-center justify-center text-primary mt-0.5 flex-shrink-0">
+                      <Check size={12} className="stroke-[2.5]" />
+                    </div>
+                    <span className="font-manrope text-sm text-text-secondary leading-snug">
                       {feature}
                     </span>
                   </li>
@@ -159,30 +168,66 @@ export default function Pricing() {
               </ul>
 
               {/* CTA */}
-              <a
-                href={tier.ctaHref}
-                id={`pricing-cta-${tier.id}`}
-                className={
-                  tier.featured
-                    ? 'btn-primary w-full justify-center text-sm'
-                    : 'block text-center py-3.5 px-6 rounded-xl border-2 border-slate-200 font-manrope font-700 font-bold text-sm text-brand-text hover:border-primary hover:text-primary transition-colors duration-200 min-h-[44px]'
-                }
-              >
-                {tier.cta}
-              </a>
-            </article>
+              {tier.popular ? (
+                <a href="#contact" className="btn-primary w-full text-sm font-semibold py-3.5 rounded-xl">
+                  {tier.cta}
+                </a>
+              ) : (
+                <a href="#contact" className="btn-secondary w-full text-sm font-semibold py-3.5 rounded-xl">
+                  {tier.cta}
+                </a>
+              )}
+            </div>
           ))}
         </div>
 
-        {/* Guarantee strip */}
-        <div className="mt-16 reveal text-center">
-          <p className="text-slate-500 font-manrope text-sm flex items-center justify-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#2563EB" strokeWidth="2"/>
-            </svg>
-            All plans include a&nbsp;<strong className="text-brand-text">30-day money-back guarantee</strong>. No questions asked.
+        {/* Transparent Pricing Note */}
+        <div className="text-center mb-24">
+          <p className="text-sm text-text-secondary font-manrope">
+            <span className="font-bold text-text-primary">Risk-free consultation.</span> If our discovery session doesn't feel like the right fit, there's no charge. No sales pressure.
           </p>
         </div>
+
+        {/* Frequently Asked Pricing Questions */}
+        <div className="max-w-[800px] mx-auto">
+          <h3 className="font-manrope font-extrabold text-2xl text-text-primary mb-8">
+            Frequently Asked Pricing Questions
+          </h3>
+          <div className="space-y-3">
+            {PRICING_FAQS.map((faq, i) => {
+              const isOpen = openFaq === i
+              return (
+                <div key={i} className="bg-card rounded-2xl border border-border/60 overflow-hidden shadow-soft-sm">
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : i)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 rounded-2xl"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="font-manrope font-bold text-base text-text-primary pr-8">
+                      {faq.q}
+                    </span>
+                    <ChevronDown size={18} className={`text-text-secondary flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                      >
+                        <div className="px-6 pb-5 font-manrope text-sm text-text-secondary leading-relaxed">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
       </div>
     </section>
   )

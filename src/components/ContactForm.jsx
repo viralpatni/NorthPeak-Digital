@@ -1,381 +1,256 @@
 import { useState, useId } from 'react'
-
-const PROJECT_TYPES = [
-  { value: '', label: 'Select project type...' },
-  { value: 'custom-website', label: 'Custom Website' },
-  { value: 'ecommerce', label: 'E-Commerce Store' },
-  { value: 'uiux-design', label: 'UI/UX Design' },
-  { value: 'seo', label: 'SEO Optimization' },
-  { value: 'performance', label: 'Performance Optimization' },
-  { value: 'maintenance', label: 'Maintenance & Support' },
-  { value: 'other', label: 'Other' },
-]
-
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/
-const PHONE_REGEX = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
-
-function validate(fields) {
-  const errors = {}
-  if (!fields.fullName.trim()) errors.fullName = 'Full name is required.'
-  else if (fields.fullName.trim().length < 2) errors.fullName = 'Please enter your full name.'
-
-  if (!fields.email.trim()) errors.email = 'Email address is required.'
-  else if (!EMAIL_REGEX.test(fields.email.trim())) errors.email = 'Please enter a valid email address.'
-
-  if (!fields.phone.trim()) errors.phone = 'Phone number is required.'
-  else if (!PHONE_REGEX.test(fields.phone.trim())) errors.phone = 'Please enter a valid phone number (e.g. +1 234 567 8900).'
-
-  if (!fields.projectType) errors.projectType = 'Please select a project type.'
-
-  if (!fields.message.trim()) errors.message = 'Message is required.'
-  else if (fields.message.trim().length < 20) errors.message = 'Please describe your project in at least 20 characters.'
-
-  return errors
-}
-
-function FieldError({ id, message }) {
-  if (!message) return null
-  return (
-    <p id={id} role="alert" className="error-message" aria-live="polite">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-      </svg>
-      {message}
-    </p>
-  )
-}
-
-const INITIAL = { fullName: '', email: '', phone: '', projectType: '', message: '' }
+import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Clock, MapPin, Mail, Phone, Video, MessageCircle } from 'lucide-react'
 
 export default function ContactForm() {
   const uid = useId()
-  const [fields, setFields] = useState(INITIAL)
+  const [fields, setFields] = useState({ name: '', email: '', company: '', message: '' })
   const [errors, setErrors] = useState({})
-  const [touched, setTouched] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  const ids = {
-    fullName: `${uid}-fullName`,
-    email: `${uid}-email`,
-    phone: `${uid}-phone`,
-    projectType: `${uid}-projectType`,
-    message: `${uid}-message`,
-    fullNameErr: `${uid}-fullName-err`,
-    emailErr: `${uid}-email-err`,
-    phoneErr: `${uid}-phone-err`,
-    projectTypeErr: `${uid}-projectType-err`,
-    messageErr: `${uid}-message-err`,
-  }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFields(prev => ({ ...prev, [name]: value }))
-    if (touched[name]) {
-      const newErrors = validate({ ...fields, [name]: value })
-      setErrors(prev => ({ ...prev, [name]: newErrors[name] }))
+  const validate = () => {
+    const errs = {}
+    if (!fields.name.trim()) errs.name = 'Please enter your name.'
+    if (!fields.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
+      errs.email = 'Please enter a valid email address.'
     }
-  }
-
-  const handleBlur = (e) => {
-    const { name } = e.target
-    setTouched(prev => ({ ...prev, [name]: true }))
-    const newErrors = validate(fields)
-    setErrors(prev => ({ ...prev, [name]: newErrors[name] }))
+    if (!fields.message.trim()) errs.message = 'Please share some details about your project.'
+    return errs
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setTouched({ fullName: true, email: true, phone: true, projectType: true, message: true })
-    const newErrors = validate(fields)
-    setErrors(newErrors)
-    if (Object.keys(newErrors).length > 0) return
-
+    const errs = validate()
+    setErrors(errs)
+    if (Object.keys(errs).length > 0) return
+    
     setSubmitting(true)
-    // Mock async submission
-    await new Promise(resolve => setTimeout(resolve, 1400))
+    await new Promise(r => setTimeout(r, 1200))
     setSubmitting(false)
     setSubmitted(true)
   }
 
-  const allErrors = validate(fields)
-  const isValid = Object.keys(allErrors).length === 0
-
-  if (submitted) {
-    return (
-      <section
-        id="contact"
-        className="py-24 lg:py-32 bg-light-bg"
-        aria-labelledby="contact-success-heading"
-      >
-        <div className="max-w-xl mx-auto px-4 sm:px-6 text-center">
-          <div
-            className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-            style={{ background: 'linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)' }}
-            aria-hidden="true"
-          >
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-              <polyline points="22 4 12 14.01 9 11.01" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <h2 id="contact-success-heading" className="font-sora font-extrabold text-3xl text-brand-text mb-4">
-            Message Sent! 🎉
-          </h2>
-          <p className="font-manrope text-slate-500 text-lg mb-8 leading-relaxed">
-            Thank you for reaching out,{' '}
-            <strong className="text-brand-text">{fields.fullName}</strong>. We'll
-            review your project details and get back to you within 1 business day.
-          </p>
-          <button
-            className="btn-primary mx-auto"
-            onClick={() => { setSubmitted(false); setFields(INITIAL); setErrors({}); setTouched({}) }}
-          >
-            Send Another Message
-          </button>
-        </div>
-      </section>
-    )
-  }
+  const inputClass = (field) => `w-full bg-background border ${errors[field] ? 'border-red-400' : 'border-border/80'} rounded-xl px-4 py-3.5 text-text-primary font-manrope text-sm placeholder:text-text-muted/60 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all outline-none`
 
   return (
-    <section
-      id="contact"
-      className="py-24 lg:py-32 bg-light-bg"
-      aria-labelledby="contact-heading"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Left — Info */}
-          <div className="reveal">
-            <span className="section-label">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.63 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.45-.45a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
-              </svg>
-              Let's Talk
+    <section id="contact" className="py-section-y bg-section-gray border-t border-border/40">
+      <div className="max-w-container mx-auto px-4 sm:px-6">
+        
+        {/* Section Header */}
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-1.5 mb-4">
+            <span className="text-[11px] font-manrope font-extrabold tracking-wider text-primary uppercase">
+              Get in Touch
             </span>
-            <h2
-              id="contact-heading"
-              className="font-sora font-extrabold text-3xl sm:text-4xl lg:text-5xl text-brand-text mt-4 mb-6"
-            >
-              Start Your{' '}
-              <span className="gradient-text">Project Today</span>
-            </h2>
-            <p className="text-slate-500 font-manrope text-lg leading-relaxed mb-10">
-              Tell us about your vision and we'll put together a tailored proposal within 24 hours.
-              No commitments, no pressure — just an honest conversation about what's possible.
-            </p>
-
-            {/* Contact details */}
-            <div className="space-y-5">
-              {[
-                {
-                  icon: (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="#2563EB" strokeWidth="2"/>
-                      <polyline points="22,6 12,13 2,6" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                  ),
-                  label: 'Email',
-                  value: 'hello@northpeak.digital',
-                },
-                {
-                  icon: (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0112 18.56a19.5 19.5 0 01-4.81-4.81 19.79 19.79 0 01-3.36-7.82A2 2 0 015.55 4h3a2 2 0 012 1.72c.13.96.34 1.9.64 2.81a2 2 0 01-.45 2.11L9.91 11.09a16 16 0 006 6l.45-.45a2 2 0 012.11-.45c.91.3 1.85.51 2.81.64A2 2 0 0122 18.92z" stroke="#2563EB" strokeWidth="2"/>
-                    </svg>
-                  ),
-                  label: 'Phone',
-                  value: '+1 (555) 123-4567',
-                },
-                {
-                  icon: (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <circle cx="12" cy="12" r="10" stroke="#2563EB" strokeWidth="2"/>
-                      <polyline points="12 6 12 12 16 14" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                  ),
-                  label: 'Response time',
-                  value: 'Within 24 business hours',
-                },
-              ].map(({ icon, label, value }) => (
-                <div key={label} className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    {icon}
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-400 font-manrope mb-0.5">{label}</p>
-                    <p className="text-brand-text font-manrope font-semibold text-sm">{value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
-
-          {/* Right — Form */}
-          <div className="reveal reveal-delay-2">
-            <div className="bg-white rounded-2xl shadow-card p-8 lg:p-10 border border-slate-100">
-              <form
-                onSubmit={handleSubmit}
-                noValidate
-                aria-label="Project enquiry form"
-              >
-                <div className="grid sm:grid-cols-2 gap-5 mb-5">
-                  {/* Full Name */}
-                  <div className="form-group">
-                    <label htmlFor={ids.fullName} className="form-label">
-                      Full Name <span aria-hidden="true" className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id={ids.fullName}
-                      name="fullName"
-                      type="text"
-                      autoComplete="name"
-                      required
-                      aria-required="true"
-                      aria-invalid={touched.fullName && !!errors.fullName}
-                      aria-describedby={errors.fullName ? ids.fullNameErr : undefined}
-                      value={fields.fullName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder="Jane Smith"
-                      className={`form-input ${touched.fullName && errors.fullName ? 'error' : ''}`}
-                    />
-                    <FieldError id={ids.fullNameErr} message={touched.fullName && errors.fullName} />
-                  </div>
-
-                  {/* Email */}
-                  <div className="form-group">
-                    <label htmlFor={ids.email} className="form-label">
-                      Email Address <span aria-hidden="true" className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id={ids.email}
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      aria-required="true"
-                      aria-invalid={touched.email && !!errors.email}
-                      aria-describedby={errors.email ? ids.emailErr : undefined}
-                      value={fields.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder="jane@company.com"
-                      className={`form-input ${touched.email && errors.email ? 'error' : ''}`}
-                    />
-                    <FieldError id={ids.emailErr} message={touched.email && errors.email} />
-                  </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-5 mb-5">
-                  {/* Phone */}
-                  <div className="form-group">
-                    <label htmlFor={ids.phone} className="form-label">
-                      Phone Number <span aria-hidden="true" className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id={ids.phone}
-                      name="phone"
-                      type="tel"
-                      autoComplete="tel"
-                      required
-                      aria-required="true"
-                      aria-invalid={touched.phone && !!errors.phone}
-                      aria-describedby={errors.phone ? ids.phoneErr : undefined}
-                      value={fields.phone}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder="+1 (555) 000-0000"
-                      className={`form-input ${touched.phone && errors.phone ? 'error' : ''}`}
-                    />
-                    <FieldError id={ids.phoneErr} message={touched.phone && errors.phone} />
-                  </div>
-
-                  {/* Project Type */}
-                  <div className="form-group">
-                    <label htmlFor={ids.projectType} className="form-label">
-                      Project Type <span aria-hidden="true" className="text-red-500">*</span>
-                    </label>
-                    <select
-                      id={ids.projectType}
-                      name="projectType"
-                      required
-                      aria-required="true"
-                      aria-invalid={touched.projectType && !!errors.projectType}
-                      aria-describedby={errors.projectType ? ids.projectTypeErr : undefined}
-                      value={fields.projectType}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={`form-input ${touched.projectType && errors.projectType ? 'error' : ''}`}
-                    >
-                      {PROJECT_TYPES.map(({ value, label }) => (
-                        <option key={value} value={value} disabled={!value}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                    <FieldError id={ids.projectTypeErr} message={touched.projectType && errors.projectType} />
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div className="form-group mb-7">
-                  <label htmlFor={ids.message} className="form-label">
-                    Project Details <span aria-hidden="true" className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    id={ids.message}
-                    name="message"
-                    required
-                    aria-required="true"
-                    aria-invalid={touched.message && !!errors.message}
-                    aria-describedby={errors.message ? ids.messageErr : undefined}
-                    value={fields.message}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="Tell us about your project, goals, and timeline..."
-                    rows={5}
-                    className={`form-input resize-none ${touched.message && errors.message ? 'error' : ''}`}
-                    style={{ minHeight: '120px' }}
-                  />
-                  <FieldError id={ids.messageErr} message={touched.message && errors.message} />
-                </div>
-
-                {/* Submit */}
-                <button
-                  type="submit"
-                  id="contact-submit-btn"
-                  className="btn-primary w-full justify-center text-base"
-                  disabled={submitting}
-                  aria-disabled={submitting}
-                >
-                  {submitting ? (
-                    <>
-                      <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" strokeWidth="3"/>
-                        <path d="M12 2a10 10 0 0110 10" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-                      </svg>
-                    </>
-                  )}
-                </button>
-
-                <p className="text-center text-xs text-slate-400 font-manrope mt-4">
-                  🔒 Your information is safe with us. No spam, ever.
-                </p>
-              </form>
-            </div>
-          </div>
+          <h2 className="font-manrope font-extrabold text-[32px] sm:text-[40px] text-text-primary tracking-tight leading-tight mb-4">
+            Let's discuss your project.
+          </h2>
+          <p className="text-text-secondary font-manrope text-base sm:text-lg">
+            No sales pressure. Just an honest conversation about your goals.
+          </p>
         </div>
+
+        {/* Split Layout */}
+        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
+          
+          {/* LEFT: Contact Information */}
+          <div className="lg:col-span-2 flex flex-col gap-8">
+            
+            {/* Team placeholder */}
+            <div className="bg-card border border-border/60 rounded-2xl p-6 shadow-soft-sm">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex -space-x-2">
+                  <div className="w-8 h-8 rounded-full bg-blue-900/20 border-2 border-card flex items-center justify-center text-[10px] font-bold text-blue-800">AS</div>
+                  <div className="w-8 h-8 rounded-full bg-purple-900/20 border-2 border-card flex items-center justify-center text-[10px] font-bold text-purple-800">SC</div>
+                  <div className="w-8 h-8 rounded-full bg-emerald-900/20 border-2 border-card flex items-center justify-center text-[10px] font-bold text-emerald-800">MJ</div>
+                </div>
+                <span className="text-sm font-bold text-text-primary">Our team is ready to help.</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-success/10 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                <span className="text-[11px] font-bold text-success">Usually replies within 2 hours</span>
+              </div>
+            </div>
+
+            {/* Contact Details */}
+            <div className="space-y-5">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-text-primary shrink-0">
+                  <Clock size={18} />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-text-primary block mb-1">Business Hours</span>
+                  <span className="text-sm text-text-secondary">Monday – Friday</span>
+                  <span className="text-sm text-text-secondary block">9:00 AM – 6:00 PM (EST)</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-text-primary shrink-0">
+                  <MapPin size={18} />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-text-primary block mb-1">Office Location</span>
+                  <span className="text-sm text-text-secondary">Remote-first team serving clients worldwide</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-text-primary shrink-0">
+                  <Mail size={18} />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-text-primary block mb-1">Email</span>
+                  <a href="mailto:hello@northpeakdigital.com" className="text-sm text-primary hover:underline">hello@northpeakdigital.com</a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-text-primary shrink-0">
+                  <Phone size={18} />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-text-primary block mb-1">Phone</span>
+                  <a href="tel:+15551234567" className="text-sm text-primary hover:underline">+1 (555) 123-4567</a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-text-primary shrink-0">
+                  <Video size={18} />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-text-primary block mb-1">Schedule a Call</span>
+                  <span className="text-sm text-text-secondary">Book a 30-minute Google Meet call directly.</span>
+                  <a href="#" className="text-sm text-primary font-bold hover:underline block mt-1">Open Calendly →</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* RIGHT: Contact Form */}
+          <div className="lg:col-span-3">
+            <div className="bg-card border border-border/60 rounded-2xl p-8 sm:p-10 shadow-soft-sm">
+              <AnimatePresence mode="wait">
+                {!submitted ? (
+                  <motion.form 
+                    key="form"
+                    onSubmit={handleSubmit} 
+                    className="space-y-5"
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    noValidate
+                  >
+                    <div className="grid sm:grid-cols-2 gap-5">
+                      {/* Name */}
+                      <div className="flex flex-col gap-2">
+                        <label htmlFor={`${uid}-name`} className="text-xs font-bold text-text-primary uppercase tracking-wider">
+                          Full Name <span className="text-red-400">*</span>
+                        </label>
+                        <input 
+                          id={`${uid}-name`} 
+                          type="text"
+                          placeholder="Your full name"
+                          className={inputClass('name')}
+                          value={fields.name}
+                          onChange={e => setFields({...fields, name: e.target.value})}
+                          aria-required="true"
+                          aria-invalid={!!errors.name}
+                        />
+                        {errors.name && <span className="text-xs text-red-500 font-medium" role="alert">{errors.name}</span>}
+                      </div>
+
+                      {/* Email */}
+                      <div className="flex flex-col gap-2">
+                        <label htmlFor={`${uid}-email`} className="text-xs font-bold text-text-primary uppercase tracking-wider">
+                          Email Address <span className="text-red-400">*</span>
+                        </label>
+                        <input 
+                          id={`${uid}-email`} 
+                          type="email"
+                          placeholder="you@company.com"
+                          className={inputClass('email')}
+                          value={fields.email}
+                          onChange={e => setFields({...fields, email: e.target.value})}
+                          aria-required="true"
+                          aria-invalid={!!errors.email}
+                        />
+                        {errors.email && <span className="text-xs text-red-500 font-medium" role="alert">{errors.email}</span>}
+                      </div>
+                    </div>
+
+                    {/* Company */}
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor={`${uid}-company`} className="text-xs font-bold text-text-primary uppercase tracking-wider">
+                        Company <span className="text-text-muted">(Optional)</span>
+                      </label>
+                      <input 
+                        id={`${uid}-company`} 
+                        type="text"
+                        placeholder="Your company name"
+                        className={inputClass('company')}
+                        value={fields.company}
+                        onChange={e => setFields({...fields, company: e.target.value})}
+                      />
+                    </div>
+
+                    {/* Message */}
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor={`${uid}-message`} className="text-xs font-bold text-text-primary uppercase tracking-wider">
+                        Project Details <span className="text-red-400">*</span>
+                      </label>
+                      <textarea 
+                        id={`${uid}-message`} 
+                        rows={5}
+                        placeholder="Tell us about your project, timeline, and goals..."
+                        className={`${inputClass('message')} resize-none`}
+                        value={fields.message}
+                        onChange={e => setFields({...fields, message: e.target.value})}
+                        aria-required="true"
+                        aria-invalid={!!errors.message}
+                      />
+                      {errors.message && <span className="text-xs text-red-500 font-medium" role="alert">{errors.message}</span>}
+                    </div>
+
+                    {/* Submit */}
+                    <button 
+                      type="submit" 
+                      className="w-full btn-primary py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 mt-2"
+                      disabled={submitting}
+                    >
+                      {submitting ? 'Sending...' : 'Send Inquiry'}
+                    </button>
+
+                    <p className="text-center text-[11px] text-text-muted font-manrope mt-3">
+                      We respond to every inquiry within two business hours.
+                    </p>
+                  </motion.form>
+                ) : (
+                  <motion.div 
+                    key="success"
+                    className="flex flex-col items-center justify-center py-12 text-center"
+                    initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="w-14 h-14 rounded-full bg-success/15 flex items-center justify-center text-success mb-6">
+                      <Check size={24} className="stroke-[3]" />
+                    </div>
+                    <h3 className="font-manrope text-xl font-extrabold text-text-primary mb-3">Thank you for reaching out.</h3>
+                    <p className="font-manrope text-sm text-text-secondary mb-8 max-w-sm leading-relaxed">
+                      We've received your inquiry and a member of our team will respond within two hours during business hours. We look forward to learning about your project.
+                    </p>
+                    <button onClick={() => { setSubmitted(false); setFields({ name: '', email: '', company: '', message: '' }) }} className="btn-secondary py-2.5 px-6 text-xs rounded-xl">
+                      Send another inquiry
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
   )

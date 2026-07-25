@@ -1,121 +1,96 @@
+import { motion } from 'framer-motion'
+import { BadgeCheck, Star } from 'lucide-react'
+
 const TESTIMONIALS = [
   {
-    id: 'testimonial-sarah',
-    initials: 'SJ',
-    name: 'Sarah Johnson',
-    company: 'Founder, Lumina Brands',
-    avatarGradient: 'linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)',
-    quote:
-      "NorthPeak didn't just build us a website — they built us a growth engine. Our conversion rate tripled in the first three months, and the team's attention to detail was extraordinary.",
-    rating: 5,
-    metric: '+312% Conversions',
+    quote: "We reduced our bounce rate by 34% and doubled qualified leads within six months of launching the new platform. Their engineering approach is incredibly rigorous.",
+    name: 'Eleanor Vance',
+    role: 'VP of Product',
+    company: 'FinTech Solutions',
+    industry: 'Financial Services',
+    country: 'United Kingdom',
+    initials: 'EV',
+    color: 'bg-blue-900/20 text-blue-800'
   },
   {
-    id: 'testimonial-marcus',
-    initials: 'MT',
-    name: 'Marcus Trent',
-    company: 'CTO, Pulse Analytics',
-    avatarGradient: 'linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%)',
-    quote:
-      "The performance optimization work alone paid for itself within weeks. Our Lighthouse score went from 42 to 98, and bounce rate dropped by 40%. These guys are the real deal.",
-    rating: 5,
-    metric: '98 Lighthouse Score',
-  },
-  {
-    id: 'testimonial-aisha',
-    initials: 'AO',
-    name: 'Aisha Owusu',
-    company: 'CEO, Solara Commerce',
-    avatarGradient: 'linear-gradient(135deg, #06B6D4 0%, #2563EB 100%)',
-    quote:
-      "From the very first call, NorthPeak understood exactly what our e-commerce brand needed. The final product exceeded every expectation — beautiful, fast, and revenue-generating from day one.",
-    rating: 5,
-    metric: '2x Revenue in Q1',
+    quote: "Our platform now loads in under one second, and our conversion rate increased by 58%. NorthPeak became part of our internal team rather than an external agency.",
+    name: 'David Chen',
+    role: 'Founder & CEO',
+    company: 'Lumina Labs',
+    industry: 'SaaS',
+    country: 'United States',
+    initials: 'DC',
+    color: 'bg-emerald-900/20 text-emerald-800'
   },
 ]
 
-function StarRating({ count }) {
-  return (
-    <div className="flex gap-1 mb-4" aria-label={`${count} out of 5 stars`}>
-      {[...Array(count)].map((_, i) => (
-        <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#FBBF24" aria-hidden="true">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-      ))}
-    </div>
-  )
-}
-
 export default function Testimonials() {
   return (
-    <section
-      id="testimonials"
-      className="py-24 lg:py-32"
-      style={{ background: 'linear-gradient(180deg, #0F172A 0%, #111827 100%)' }}
-      aria-labelledby="testimonials-heading"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16 reveal">
-          <span className="section-label border-white/20 text-slate-300" style={{ background: 'rgba(255,255,255,0.06)' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-            </svg>
-            Client Stories
-          </span>
-          <h2
-            id="testimonials-heading"
-            className="font-sora font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white mt-4 mb-4"
-          >
-            Loved by{' '}
-            <span className="gradient-text">Founders</span>{' '}
-            Worldwide
+    <section id="testimonials" className="py-section-y bg-section-lavender border-t border-border/40 overflow-hidden">
+      <div className="max-w-container mx-auto px-4 sm:px-6">
+        
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-1.5 mb-4">
+            <span className="text-[11px] font-manrope font-extrabold tracking-wider text-primary uppercase">
+              Client Outcomes
+            </span>
+          </div>
+          <h2 className="font-manrope font-extrabold text-[32px] sm:text-[40px] text-text-primary tracking-tight leading-tight mb-4">
+            Don't just take our word for it.
           </h2>
-          <p className="text-slate-400 font-manrope text-lg max-w-xl mx-auto">
-            Don't take our word for it — hear from the founders and teams we've helped grow.
+          <p className="text-text-secondary font-manrope text-base sm:text-lg">
+            We judge our success by the measurable business growth of our partners.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-2 gap-8">
           {TESTIMONIALS.map((t, i) => (
-            <article
-              key={t.id}
-              id={t.id}
-              className={`testimonial-card reveal reveal-delay-${i + 1} flex flex-col`}
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              whileHover={{ y: -4 }}
+              className="bg-card border border-border/60 rounded-3xl p-8 sm:p-10 relative flex flex-col justify-between shadow-soft-sm hover:shadow-soft-md transition-all duration-300"
             >
-              <StarRating count={t.rating} />
-
-              {/* Quote */}
-              <blockquote className="text-slate-300 font-manrope text-sm leading-relaxed flex-1 mb-6">
-                <span className="text-2xl text-primary font-sora leading-none" aria-hidden="true">"</span>
-                {t.quote}
-                <span className="text-2xl text-primary font-sora leading-none" aria-hidden="true">"</span>
-              </blockquote>
-
-              {/* Metric badge */}
-              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 mb-5 self-start">
-                <div className="w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
-                <span className="text-accent text-xs font-manrope font-bold">{t.metric}</span>
+              {/* 5-Star Rating */}
+              <div className="flex items-center gap-1 mb-6 text-amber-500">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} size={16} fill="currentColor" />
+                ))}
               </div>
-
-              {/* Author */}
-              <footer className="flex items-center gap-3 pt-5 border-t border-white/10">
-                <div
-                  className="avatar"
-                  style={{ background: t.avatarGradient }}
-                  aria-hidden="true"
-                >
-                  {t.initials}
+              
+              <p className="font-manrope text-text-primary text-lg sm:text-xl leading-relaxed mb-10 font-semibold">
+                "{t.quote}"
+              </p>
+              
+              <div className="flex items-start justify-between border-t border-border/40 pt-6">
+                <div className="flex items-center gap-4">
+                  {/* Portrait Placeholder */}
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-manrope font-extrabold text-sm shadow-sm ${t.color}`}>
+                    {t.initials}
+                  </div>
+                  <div>
+                    <h4 className="font-manrope font-bold text-text-primary text-base leading-none mb-1.5 flex items-center gap-1.5">
+                      {t.name}
+                    </h4>
+                    <p className="font-manrope text-[13px] font-semibold text-text-secondary mb-1">{t.role}, {t.company}</p>
+                    <p className="font-manrope text-[11px] font-bold text-text-muted uppercase tracking-wider">
+                      {t.industry} • {t.country}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-white font-sora font-semibold text-sm">{t.name}</p>
-                  <p className="text-slate-400 font-manrope text-xs">{t.company}</p>
+                
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-success/10 rounded-full text-[11px] font-manrope font-extrabold text-success uppercase tracking-wider shrink-0 mt-1">
+                  <BadgeCheck size={14} />
+                  Verified
                 </div>
-              </footer>
-            </article>
+              </div>
+            </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   )
