@@ -1,6 +1,6 @@
 import { useState, useId } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Clock, MapPin, Mail, Phone, Video, MessageCircle } from 'lucide-react'
+import { Check, Clock, MapPin, Mail, Phone, Video } from 'lucide-react'
 
 export default function ContactForm() {
   const uid = useId()
@@ -62,9 +62,15 @@ export default function ContactForm() {
             <div className="bg-card border border-border/60 rounded-2xl p-6 shadow-soft-sm">
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex -space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-blue-900/20 border-2 border-card flex items-center justify-center text-[10px] font-bold text-blue-800">AS</div>
-                  <div className="w-8 h-8 rounded-full bg-purple-900/20 border-2 border-card flex items-center justify-center text-[10px] font-bold text-purple-800">SC</div>
-                  <div className="w-8 h-8 rounded-full bg-emerald-900/20 border-2 border-card flex items-center justify-center text-[10px] font-bold text-emerald-800">MJ</div>
+                  <div className="w-8 h-8 rounded-full border-2 border-card overflow-hidden bg-secondary">
+                    <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Alex&backgroundColor=transparent&size=32" alt="Alex" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="w-8 h-8 rounded-full border-2 border-card overflow-hidden bg-secondary">
+                    <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Sarah&backgroundColor=transparent&size=32" alt="Sarah" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="w-8 h-8 rounded-full border-2 border-card overflow-hidden bg-secondary">
+                    <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Marcus&backgroundColor=transparent&size=32" alt="Marcus" className="w-full h-full object-cover" />
+                  </div>
                 </div>
                 <span className="text-sm font-bold text-text-primary">Our team is ready to help.</span>
               </div>

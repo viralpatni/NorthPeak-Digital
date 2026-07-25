@@ -1,5 +1,167 @@
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Truck, MapPin, Search, Filter, MoreHorizontal, ShoppingCart, Users, CreditCard, Activity } from 'lucide-react'
+
+// --- Custom Mini-Dashboards ---
+
+const FinTechDashboard = () => (
+  <div className="absolute -bottom-4 sm:-bottom-12 -right-4 sm:-right-12 w-[110%] sm:w-[120%] h-[90%] sm:h-[80%] bg-[#0B1120] text-slate-200 rounded-t-3xl border border-slate-800 shadow-2xl p-4 sm:p-6 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500 font-sans flex flex-col">
+    {/* Window Controls */}
+    <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center gap-2">
+        <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
+        <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
+        <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center">
+          <Search size={12} className="text-slate-400" />
+        </div>
+      </div>
+    </div>
+    
+    <div className="flex gap-6 h-full">
+      {/* Sidebar */}
+      <div className="hidden sm:flex flex-col gap-4 w-1/4 border-r border-slate-800 pr-4">
+        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Portfolio</div>
+        {['Equities', 'Crypto', 'Bonds'].map((item, i) => (
+          <div key={i} className={`text-xs font-semibold px-3 py-2 rounded-lg ${i === 0 ? 'bg-blue-600/20 text-blue-400' : 'text-slate-400'}`}>
+            {item}
+          </div>
+        ))}
+      </div>
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        <div className="flex justify-between items-end mb-6">
+          <div>
+            <div className="text-[10px] text-slate-500 font-semibold mb-1">TOTAL BALANCE</div>
+            <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">$2,458,912.00</div>
+          </div>
+          <div className="flex items-center gap-1 text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-md text-xs font-bold">
+            <ArrowUpRight size={14} /> 12.4%
+          </div>
+        </div>
+        
+        {/* SVG Chart */}
+        <div className="flex-1 min-h-[100px] border border-slate-800 rounded-xl bg-slate-900/50 relative overflow-hidden p-4">
+          <svg viewBox="0 0 400 100" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="gradient-blue" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path d="M0,100 L0,70 C50,60 100,80 150,40 C200,0 250,50 300,20 C350,-10 400,30 400,10 L400,100 Z" fill="url(#gradient-blue)" />
+            <path d="M0,70 C50,60 100,80 150,40 C200,0 250,50 300,20 C350,-10 400,30 400,10" fill="none" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="400" cy="10" r="4" fill="#3B82F6" />
+          </svg>
+          
+          {/* Floating Tooltip */}
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-700 rounded shadow-xl px-2 py-1 flex flex-col items-center">
+            <span className="text-[9px] text-slate-400">14:30 PM</span>
+            <span className="text-[11px] font-bold text-white">$2.45M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
+const LogisticsDashboard = () => (
+  <div className="absolute -bottom-4 sm:-bottom-12 -right-4 sm:-right-12 w-[110%] sm:w-[120%] h-[90%] sm:h-[80%] bg-white text-slate-800 rounded-t-3xl border border-slate-200 shadow-2xl p-4 sm:p-6 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500 font-sans flex flex-col">
+    <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-4">
+      <div className="font-bold text-sm flex items-center gap-2">
+        <div className="w-6 h-6 rounded bg-emerald-100 text-emerald-600 flex items-center justify-center"><Truck size={12} /></div>
+        NovaFleet™
+      </div>
+      <div className="flex gap-2">
+        <span className="px-2 py-1 bg-slate-100 text-slate-500 text-[10px] font-bold rounded flex items-center gap-1"><Filter size={10} /> Filter</span>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+        <div className="text-[10px] text-slate-500 font-bold uppercase mb-1">Active Deliveries</div>
+        <div className="text-xl font-extrabold text-slate-800">1,284</div>
+        <div className="text-[10px] text-emerald-600 mt-1 font-semibold flex items-center gap-1"><ArrowUpRight size={10}/> 98% On Time</div>
+      </div>
+      <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+        <div className="text-[10px] text-slate-500 font-bold uppercase mb-1">Fleet Status</div>
+        <div className="text-xl font-extrabold text-slate-800">492<span className="text-sm font-medium text-slate-400"> / 500</span></div>
+        <div className="text-[10px] text-emerald-600 mt-1 font-semibold flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"/> Vehicles Active</div>
+      </div>
+    </div>
+
+    {/* Map UI */}
+    <div className="flex-1 bg-slate-100 rounded-xl relative overflow-hidden border border-slate-200">
+      <svg className="w-full h-full opacity-30" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#94a3b8" strokeWidth="0.5"/>
+        </pattern>
+        <rect width="100" height="100" fill="url(#grid)" />
+        <path d="M 20 80 Q 40 40 80 20" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 2"/>
+      </svg>
+      {/* Route Markers */}
+      <div className="absolute top-[20%] right-[20%] flex flex-col items-center">
+        <div className="w-3 h-3 bg-emerald-500 rounded-full border-2 border-white shadow-sm z-10"/>
+        <div className="bg-white px-1.5 py-0.5 rounded shadow text-[9px] font-bold mt-1 text-slate-700">Hub A</div>
+      </div>
+      <div className="absolute bottom-[20%] left-[20%] flex flex-col items-center">
+        <div className="w-3 h-3 bg-blue-500 rounded-full border-2 border-white shadow-sm z-10"/>
+        <div className="bg-white px-1.5 py-0.5 rounded shadow text-[9px] font-bold mt-1 text-slate-700">Client</div>
+      </div>
+      {/* Moving vehicle dot */}
+      <div className="absolute top-[50%] left-[50%] w-2 h-2 bg-slate-800 rounded-full shadow border border-white animate-pulse"/>
+    </div>
+  </div>
+)
+
+const CommerceDashboard = () => (
+  <div className="absolute -bottom-4 sm:-bottom-12 -right-4 sm:-right-12 w-[110%] sm:w-[120%] h-[90%] sm:h-[80%] bg-[#FAF5FF] text-slate-800 rounded-t-3xl border border-purple-100 shadow-2xl p-4 sm:p-6 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500 font-sans flex flex-col">
+    <div className="flex justify-between items-center mb-6">
+      <div className="font-extrabold text-purple-950 flex items-center gap-2">
+        <ShoppingCart size={16} className="text-purple-600" /> Analytics
+      </div>
+      <div className="flex gap-2">
+        <div className="w-6 h-6 rounded-full bg-white shadow-sm border border-purple-50 flex items-center justify-center text-slate-400">
+          <MoreHorizontal size={12} />
+        </div>
+      </div>
+    </div>
+    
+    {/* KPI Row */}
+    <div className="grid grid-cols-3 gap-3 mb-6">
+      {[
+        { i: <CreditCard size={12}/>, label: 'Revenue', val: '$84K', color: 'text-purple-600', bg: 'bg-purple-100' },
+        { i: <Users size={12}/>, label: 'Visitors', val: '12K', color: 'text-blue-600', bg: 'bg-blue-100' },
+        { i: <Activity size={12}/>, label: 'Conversion', val: '4.8%', color: 'text-emerald-600', bg: 'bg-emerald-100' },
+      ].map((k, idx) => (
+        <div key={idx} className="bg-white p-3 rounded-xl shadow-sm border border-purple-50 flex flex-col gap-2">
+          <div className={`w-6 h-6 rounded-md ${k.bg} ${k.color} flex items-center justify-center`}>{k.i}</div>
+          <div>
+            <div className="text-[9px] font-bold text-slate-400 uppercase">{k.label}</div>
+            <div className="text-sm sm:text-base font-extrabold text-slate-800">{k.val}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Funnel/Bar Chart Area */}
+    <div className="flex-1 bg-white rounded-xl shadow-sm border border-purple-50 p-4 flex flex-col">
+      <div className="text-[10px] font-bold text-slate-400 uppercase mb-4">Sales Pipeline</div>
+      <div className="flex-1 flex items-end justify-between gap-2">
+        {[40, 75, 50, 90, 65, 80, 100].map((h, i) => (
+          <div key={i} className="w-full bg-purple-50 rounded-t-sm relative group cursor-pointer" style={{ height: '100%' }}>
+            <div 
+              className={`absolute bottom-0 w-full rounded-t-sm transition-all duration-300 ${i === 6 ? 'bg-purple-600' : 'bg-purple-200 group-hover:bg-purple-300'}`}
+              style={{ height: `${h}%` }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)
 
 const CASE_STUDIES = [
   {
@@ -13,7 +175,8 @@ const CASE_STUDIES = [
       { val: "3x", label: "Faster Load Speed" },
       { val: "61%", label: "Higher Conversions" }
     ],
-    bg: "bg-section-blue"
+    bg: "bg-section-blue",
+    Dashboard: FinTechDashboard
   },
   {
     company: "Nova Logistics",
@@ -26,7 +189,8 @@ const CASE_STUDIES = [
       { val: "99", label: "Lighthouse Score" },
       { val: "68%", label: "Lower Support Tickets" }
     ],
-    bg: "bg-section-lavender"
+    bg: "bg-section-lavender",
+    Dashboard: LogisticsDashboard
   },
   {
     company: "Bloom Commerce",
@@ -39,7 +203,8 @@ const CASE_STUDIES = [
       { val: "58%", label: "Conversion Increase" },
       { val: "4.9", label: "Customer Rating" }
     ],
-    bg: "bg-section-gray"
+    bg: "bg-section-gray",
+    Dashboard: CommerceDashboard
   }
 ]
 
@@ -85,16 +250,8 @@ export default function CaseStudies() {
                   </span>
                 </div>
                 
-                {/* Abstract UI Representation */}
-                <div className="absolute -bottom-12 -right-12 w-[120%] h-[80%] bg-card rounded-t-3xl border border-border/50 shadow-soft-lg p-6 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="w-2.5 h-2.5 rounded-full bg-border" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-border" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-border" />
-                  </div>
-                  <div className="h-4 w-1/3 bg-secondary rounded mb-2" />
-                  <div className="h-4 w-1/2 bg-secondary rounded" />
-                </div>
+                {/* Custom UI Representation */}
+                <study.Dashboard />
               </div>
 
               {/* Content Area (Right) */}

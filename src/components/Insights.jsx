@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Clock, User } from 'lucide-react'
+import { ArrowRight, Clock } from 'lucide-react'
 
 const ARTICLES = [
   {
@@ -59,9 +59,24 @@ export default function Insights() {
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               className="group bg-card border border-border/60 rounded-3xl overflow-hidden shadow-soft-sm hover:shadow-soft-md hover:-translate-y-1 transition-all duration-300 flex flex-col"
             >
-              {/* Thumbnail placeholder */}
-              <div className="h-48 bg-section-gray border-b border-border/40 flex items-center justify-center">
-                <span className="text-text-muted font-manrope font-bold text-sm uppercase tracking-widest opacity-40">Article</span>
+              {/* Dynamic Abstract Thumbnail */}
+              <div className={`h-48 border-b border-border/40 relative overflow-hidden ${
+                idx === 0 ? 'bg-gradient-to-br from-blue-900/40 via-background to-background' :
+                idx === 1 ? 'bg-gradient-to-tr from-emerald-900/30 via-background to-teal-900/10' :
+                'bg-gradient-to-bl from-purple-900/30 via-background to-background'
+              }`}>
+                {/* Decorative SVG Elements */}
+                <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <defs>
+                    <pattern id={`grid-${idx}`} width="10" height="10" patternUnits="userSpaceOnUse">
+                      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100" height="100" fill={`url(#grid-${idx})`} />
+                </svg>
+                {idx === 0 && <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full border border-primary/20 bg-primary/5 blur-2xl" />}
+                {idx === 1 && <div className="absolute top-0 left-10 w-32 h-32 bg-emerald-500/10 blur-xl rounded-full" />}
+                {idx === 2 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-purple-500/20 rounded-full rotate-45" />}
               </div>
               
               <div className="p-6 sm:p-8 flex flex-col flex-1">
@@ -87,8 +102,13 @@ export default function Insights() {
                 {/* Author & Date */}
                 <div className="flex items-center justify-between pt-5 border-t border-border/40">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center">
-                      <User size={12} className="text-text-muted" />
+                    <div className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center overflow-hidden border border-border/40">
+                       <img 
+                          src={`https://api.dicebear.com/9.x/notionists/svg?seed=${encodeURIComponent(article.author)}&backgroundColor=transparent&size=32`}
+                          alt={article.author}
+                          className="w-full h-full object-cover scale-110 object-bottom"
+                          loading="lazy"
+                        />
                     </div>
                     <span className="text-[12px] font-bold text-text-primary">{article.author}</span>
                   </div>

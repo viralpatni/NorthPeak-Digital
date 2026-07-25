@@ -1,5 +1,10 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight, ArrowRight } from 'lucide-react'
+import img1 from '../assets/images (1).jpg'
+import img2 from '../assets/images (2).jpg'
+import img3 from '../assets/images.jpg'
+import img4 from '../assets/images (4).jpg'
+import img5 from '../assets/images (5).jpg'
 
 const TEAM_MEMBERS = [
   {
@@ -8,15 +13,17 @@ const TEAM_MEMBERS = [
     experience: "14+ Years",
     intro: "Former Director of Engineering at a Fortune 500.",
     quote: "We build products that people enjoy using.",
-    placeholder: "bg-blue-900/20 text-blue-800"
+    photo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800&h=800",
+    position: "object-top"
   },
   {
-    name: "Sarah Chen",
+    name: "James Wilson",
     role: "Lead Product Designer",
     experience: "10+ Years",
     intro: "Specializes in design systems and editorial layouts.",
     quote: "Design is how it works, not just how it looks.",
-    placeholder: "bg-purple-900/20 text-purple-800"
+    photo: img1,
+    position: "object-[center_20%]"
   },
   {
     name: "Marcus Johnson",
@@ -24,7 +31,8 @@ const TEAM_MEMBERS = [
     experience: "8+ Years",
     intro: "Obsessed with React performance and animations.",
     quote: "Every frame matters in digital interactions.",
-    placeholder: "bg-emerald-900/20 text-emerald-800"
+    photo: img2,
+    position: "object-[center_15%]"
   },
   {
     name: "David Kim",
@@ -32,7 +40,8 @@ const TEAM_MEMBERS = [
     experience: "9+ Years",
     intro: "Architects scalable microservices and APIs.",
     quote: "True scale happens silently in the background.",
-    placeholder: "bg-amber-900/20 text-amber-800"
+    photo: img3,
+    position: "object-top"
   },
   {
     name: "Elena Rodriguez",
@@ -40,15 +49,17 @@ const TEAM_MEMBERS = [
     experience: "7+ Years",
     intro: "Drives organic growth through technical excellence.",
     quote: "Visibility requires a flawless technical foundation.",
-    placeholder: "bg-rose-900/20 text-rose-800"
+    photo: img4,
+    position: "object-[center_10%]"
   },
   {
-    name: "James Wilson",
+    name: "Sarah Chen",
     role: "Project Manager",
     experience: "12+ Years",
     intro: "Ensures seamless delivery and stakeholder alignment.",
     quote: "Predictability is the ultimate luxury in software.",
-    placeholder: "bg-slate-800/20 text-slate-700"
+    photo: img5,
+    position: "object-[center_25%]"
   }
 ]
 
@@ -78,9 +89,14 @@ export default function Team() {
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               className="group bg-card border border-border/60 rounded-3xl p-6 shadow-soft-sm flex flex-col"
             >
-              {/* Photo Placeholder */}
-              <div className={`w-full h-48 rounded-2xl mb-6 flex items-center justify-center ${member.placeholder}`}>
-                <span className="font-manrope font-bold text-lg opacity-50 uppercase tracking-widest">Profile</span>
+              {/* Realistic Avatar */}
+              <div className="w-full h-48 rounded-2xl mb-6 bg-secondary overflow-hidden relative border border-border/40 flex justify-center items-end">
+                <img 
+                  src={member.photo}
+                  alt={member.name}
+                  className={`w-full h-full object-cover ${member.position || 'object-center'}`}
+                  loading="lazy"
+                />
               </div>
               
               <div className="flex justify-between items-start mb-2">

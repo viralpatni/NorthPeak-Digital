@@ -5,11 +5,10 @@ const ThemeContext = createContext()
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme')
+      const stored = sessionStorage.getItem('theme')
       if (stored) return stored
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark'
     }
-    return 'light' // Default per requirements
+    return 'light' // Default to light on first load or new tab
   })
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export function ThemeProvider({ children }) {
       root.classList.add(theme)
     }
 
-    localStorage.setItem('theme', theme)
+    sessionStorage.setItem('theme', theme)
   }, [theme])
 
   // Listen for system theme changes if set to system

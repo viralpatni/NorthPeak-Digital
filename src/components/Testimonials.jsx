@@ -67,9 +67,14 @@ export default function Testimonials() {
               
               <div className="flex items-start justify-between border-t border-border/40 pt-6">
                 <div className="flex items-center gap-4">
-                  {/* Portrait Placeholder */}
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-manrope font-extrabold text-sm shadow-sm ${t.color}`}>
-                    {t.initials}
+                  {/* Realistic Avatar */}
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm overflow-hidden bg-secondary border border-border/40">
+                    <img 
+                      src={`https://api.dicebear.com/9.x/notionists/svg?seed=${encodeURIComponent(t.name)}&backgroundColor=transparent&size=64`}
+                      alt={t.name}
+                      className="w-full h-full object-cover scale-110 object-bottom"
+                      loading="lazy"
+                    />
                   </div>
                   <div>
                     <h4 className="font-manrope font-bold text-text-primary text-base leading-none mb-1.5 flex items-center gap-1.5">
