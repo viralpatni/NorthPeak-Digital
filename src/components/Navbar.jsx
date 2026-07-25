@@ -4,6 +4,7 @@ import { Moon, Sun, Monitor, Menu, X } from 'lucide-react'
 import { useTheme } from './ThemeContext'
 
 const NAV_LINKS = [
+  { href: '#home', label: 'Home' },
   { href: '#services', label: 'Services' },
   { href: '#work', label: 'Work' },
   { href: '#pricing', label: 'Pricing' },
