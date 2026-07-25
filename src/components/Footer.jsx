@@ -119,7 +119,10 @@ export default function Footer() {
             <span>Engineering Growth Through Digital Excellence.</span>
           </div>
           <div className="text-[11px] text-slate-500 font-manrope flex items-center gap-1.5">
-            Built for digital heroes training task <span className="text-red-500">❤️</span>
+            Built for{" "}
+            <a href="https://digitalheroesco.com" target="_blank" rel="noopener noreferrer">
+              digital heroes training task
+            </a> <span className="text-red-500">❤️</span>
           </div>
         </div>
 
