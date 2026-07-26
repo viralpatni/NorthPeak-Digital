@@ -9,7 +9,10 @@ A premium, accessible, performance-first one-page landing site for the fictional
 ## 🚀 Live Demo
 
 <!-- Replace with your deployed URL -->
-**Live URL:** _Deploy to Netlify / Vercel and paste URL here_
+**Live URL:** https://north-peak-digital-pi-ten.vercel.app/
+
+## Github
+**GitHub Repository:** https://github.com/viralpatni/northpeak-digital
 
 ---
 
@@ -20,7 +23,7 @@ A premium, accessible, performance-first one-page landing site for the fictional
 | Framework | React 18 + Vite |
 | Styling | Tailwind CSS v3 (no Bootstrap, no Material UI) |
 | Fonts | Sora + Manrope via `<link rel="preload">` (non-blocking) |
-| Animations | Native CSS transitions + `IntersectionObserver` (no animation libraries) |
+| Animations | Framer Motion + CSS transitions |
 | Icons | Inline SVGs (no icon font imports) |
 | Validation | Custom vanilla JS (no library) |
 
@@ -37,6 +40,15 @@ A premium, accessible, performance-first one-page landing site for the fictional
 6. **Pricing** — 3 tiers (Starter / **Professional** "Most Popular" / Enterprise), hover lift.
 7. **Contact Form** — Full client-side validation (email pattern, phone regex), `aria-describedby` error linking, mock async submit with success screen.
 8. **Footer** — Dark Navy→Black gradient, quick links, services, social icons, copyright.
+
+## 📊 Lighthouse Scores
+
+| Category | Mobile | Desktop |
+|----------|:------:|:-------:|
+| Performance | 90 | 95 |
+| Accessibility | 92 | 92 |
+| Best Practices | 100 | 100 |
+| SEO | 100 | 100 |
 
 ### Accessibility
 - Correct semantic HTML (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`)
@@ -76,23 +88,10 @@ npm run preview
 ---
 
 ## 🚢 Deploying
-
-### Netlify (recommended)
-1. Push repo to GitHub
-2. Connect repo in Netlify → New site from Git
-3. Build command: `npm run build`
-4. Publish directory: `dist`
-
-### Vercel
-```bash
-npm i -g vercel
-vercel --prod
 ```
 
-### GitHub Pages
-```bash
-npm run build
-# Push the dist/ folder contents to gh-pages branch
+The project is deployed on Vercel and is publicly accessible through the Live Demo link above.
+
 ```
 
 ---
@@ -123,6 +122,20 @@ northpeak-digital/
 ├── postcss.config.js
 ├── vite.config.js
 └── README.md
+```
+## 🤖 AI Usage
+```
+AI-assisted tools were used during development.
+
+- Antigravity – UI generation and component implementation
+- ChatGPT – Design refinement, debugging, accessibility review, documentation, and optimization guidance
+
+All generated code was reviewed, customized, tested, and refined before final submission. A detailed disclosure is available in `AI_DISCLOSURE.md`.
+```
+
+## ⚡ Optimization
+```
+Performance and accessibility improvements are documented in `OPTIMIZATION.md`.
 ```
 
 ---
