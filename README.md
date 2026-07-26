@@ -71,7 +71,7 @@ A premium, accessible, performance-first one-page landing site for the fictional
 
 ```bash
 # Clone
-git clone https://github.com/YOUR_USERNAME/northpeak-digital.git
+git clone https://github.com/viralpatni/northpeak-digital.git
 cd northpeak-digital
 
 # Install
